@@ -131,39 +131,3 @@ print("Hello World")
 print()
 
 
-
-"""m = Matrix([[-100,2,3,6,6],[2,2,3,6,2],[1,1,5,1,7],[1,1,1,1,0],[1,3,3,4,1]])
-m.PrintMatrix()
-print()
-print(m.Determinant())"""
-
-"""vec1 = Vector([1,9])
-vec2 = Vector([2,1])
-
-vec3 = Haddamard_Product(vec1,vec2)
-
-print(vec3.vals)
-print(Dot_Product(vec1,vec2))
-"""
-
-"""matrix2 = Matrix([[1,2],[99,1]])
-matrix1 = Matrix([[1,0],[0,1],[1,1]])
-print("Matrix 1 =")
-matrix1.PrintMatrix()
-print("Matrix 2 =")
-matrix2.PrintMatrix()
-print("Matrix 1 x Matrix 2 =")
-matrix3 = Matrix_Product(matrix1,matrix2)
-matrix3.PrintMatrix()
-matrix3.setVal(1,1,69)
-print("Matrix 3 =")
-matrix3.PrintMatrix()"""
-
-"""m = Matrix([[1,1],[2,2]])
-n = Matrix([[4,4],[1,1]])
-p = Haddamard_Product(m,n)
-print("p = ")
-p.PrintMatrix()
-q = Matrix_Sum(m,n)
-print("q = ")
-q.PrintMatrix()"""

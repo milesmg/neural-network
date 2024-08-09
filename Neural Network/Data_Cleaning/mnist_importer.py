@@ -4,14 +4,19 @@ import pickle
 import gzip
 import os
 
-
 def open_data_file():
     #Import MNIST data as tuple with (training data, validation data, test data)
     # training data = (images, answers)
     # images = 50,000-entry ndarray, each entry is a 28 x 28 = 784 value ndarray
     # answers = 50,000-entry ndarray, each entry is a number 0-9
     # validation data, test data same except 10k entries 
-    f = gzip.open('C:/Users/masga/Documents/VSCode Projects/Neural Network/Data/mnist.pkl.gz', 'rb')
+
+    #for your troubles:
+    relative_data_path = '../Data/mnist.pkl.gz'
+    importer_directory = os.path.dirname(os.path.abspath(__file__))
+    data_path = os.path.join(importer_directory, relative_data_path)
+
+    f = gzip.open(data_path, 'rb')
     training_data, validation_data, test_data = pickle.load(f, encoding='latin1')
     f.close()
     return (training_data, validation_data, test_data)
@@ -36,8 +41,3 @@ def wrap_data_file():
     data = open_data_file()
     wrapped_data = wrap_data(data[0]), wrap_data(data[1]), wrap_data(data[2])
     return(wrapped_data)
-
-#wrapped_data = wrap_data_file()
-"""print("testing")
-print(wrapped_data[0][0])
-print("done")"""

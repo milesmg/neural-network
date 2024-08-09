@@ -32,13 +32,8 @@ class NeuralNet():
     #the matrix may have a few extra rows of zeros; might need to be cleaned up before
     def to_mini_batches(self, data):
         batch_size = self.mini_batch_size
-        #data = data[0]
 
         num_batches = math.ceil(len(data) / batch_size)
-        #print(f"num_batchs = {num_batches}")
-        #print(f"len(data) / self.mini_batch_size) = {len(data) / batch_size}")
-
-        #mini_batches = np.array([[0] * self.mini_batch_size for x in range(num_batches)])
         mini_batches = np.zeros((num_batches, batch_size), dtype='object')
 
         np.random.shuffle(data)
@@ -51,25 +46,10 @@ class NeuralNet():
                 i += 1
             else:
                 j += 1
-        # remove extra 0's -- can't do it bc can't remove elements from ndarrays
-        """while i < num_batches:
-            while j < batch_size:
-                if mini_batches[i][j] == 0:
-                    del mini_batches[i][j]
-                    print(f"just deleted a 0 at ({i},{j})")
-                else:
-                    print(f"there wasn't a 0 at ({i},{j})")
-
-
-
-        print("minbatchi")
-        print()
-        print(mini_batches[num_batches-1][self.mini_batch_size-1])
-        print()"""
         return(mini_batches)
     
     # takes as input 2-tuple (image, answer)
-    # returns tuple: (guessed value = int, cost = float, activations)
+    # returns tuple: (guessed value = int, activations)
     # unnormalized_activations = list of n x 1 ndarrays, where n is 784 (the first layer of neurons) or self.sizes[i]
     def interpret_image(self, image):
         # image should be a tuple (x,y) where x is the vals, y is the vectorized number
@@ -78,7 +58,6 @@ class NeuralNet():
         y = image[1]
         datum = image[0]
 
-        # TEST TO MAKE SURE INDICES WORK
         activations = [0] * (self.numLayers)
         activations[0] = datum
         for x in range(self.numLayers-1):
@@ -94,13 +73,8 @@ class NeuralNet():
                 maxVal = datum[x]
                 guessedVal = x
         
-        """#compute the cost
-        diff = y - datum
-        sum = np.dot(diff,diff)
-        cost = sum / (2)"""
-        cost = 1
         
-        return(guessedVal, cost, activations)
+        return(guessedVal, activations)
 
     #call this fxn to train the model on a single mini batch
     def perform_gradient_descent(self, mini_batch):
@@ -127,24 +101,17 @@ class NeuralNet():
         printed = False
         for datum_tuple in mini_batch:
             if datum_tuple != 0:
-                list_of_activationLists.append(self.interpret_image(datum_tuple)[2])
+                list_of_activationLists.append(self.interpret_image(datum_tuple)[1])
         
         del list_of_activationLists[0]
 
         #create list of errors
         list_of_errorLists = [[0] * (self.numLayers - 1) for _ in range(len(list_of_activationLists))]
         which_example = 0
-        t = False
         for datum_tuple in mini_batch:
             if datum_tuple != 0:
                 #error in last layer; implementing equation 1
                 answerDif = sigma(list_of_activationLists[which_example][-1]) - datum_tuple[1]
-                """if not t:
-                    print(answerDif)
-                    print(f"list_of_activationLists[which_example][-1]) = {sigma(list_of_activationLists[which_example][-1])}")
-                    print(f"datum_tuple[1] = {datum_tuple[1]}")
-                    print(f"")
-                    t = not t"""
                 list_of_errorLists[which_example][0] = answerDif * sigprime(list_of_activationLists[which_example][-1])
                 #error in subsequent layers; implementing equation 2
                 for ell in range(1,self.numLayers-1):
@@ -169,11 +136,6 @@ class NeuralNet():
             for run in range(1,num_examples):
                 sumForBiases += list_of_errorLists[run][-1 - bias]
             self.biases[bias] = self.biases[bias] - (self.learning_rate/num_examples) * sumForBiases
-
-
-        
-
-
 
     #call this fxn to train the model on some data
     def train_on_data(self, batched_data):
@@ -231,7 +193,7 @@ print("Hello World")
 print()
 
 data = wrap_data_file()
-test = NeuralNet([784,30,30,30,10])
+test = NeuralNet([784,30,30,10])
 test.Run(data, 3, 0, 0, 0)
 for x in range(100):
     print(f"Now running for 10 epochs. This is pass # {x}.")
