@@ -1,5 +1,5 @@
 # neural-network
- Code for a neural network that decyphers handwritten digits from the MNIST database.
+ Code for a neural network that deciphers handwritten digits from the MNIST database.
 
 CREDITS: 
 
